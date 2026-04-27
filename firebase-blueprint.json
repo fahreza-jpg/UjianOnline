@@ -1,0 +1,115 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "System users including Admin, Guru, Tenaga Kependidikan, and Staff.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "guru", "staff"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "name", "role"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Student data for attendance and exams.",
+      "type": "object",
+      "properties": {
+        "nis": { "type": "string" },
+        "name": { "type": "string" },
+        "class": { "type": "string" },
+        "major": { "type": "string", "enum": ["TKJ", "DKV", "AK", "BC", "MPLB", "BD"] },
+        "password": { "type": "string" }
+      },
+      "required": ["nis", "name", "class", "major"]
+    },
+    "Attendance": {
+      "title": "Attendance",
+      "description": "Attendance logs for employees and students.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userRole": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "status": { "type": "string", "enum": ["Hadir", "Izin", "Sakit", "Alpa"] },
+        "type": { "type": "string", "enum": ["karyawan", "siswa"] },
+        "city": { "type": "string" },
+        "major": { "type": "string" }
+      },
+      "required": ["userId", "date", "time", "status", "type"]
+    },
+    "Exam": {
+      "title": "Exam",
+      "description": "Examination configuration.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "major": { "type": "string" },
+        "duration": { "type": "integer" },
+        "maxScore": { "type": "integer" },
+        "passingScore": { "type": "integer" }
+      },
+      "required": ["title", "major", "duration"]
+    },
+    "Question": {
+      "title": "Question",
+      "description": "Exam questions.",
+      "type": "object",
+      "properties": {
+        "examId": { "type": "string" },
+        "text": { "type": "string" },
+        "options": { "type": "array" },
+        "correctIndex": { "type": "integer" },
+        "difficulty": { "type": "string", "enum": ["easy", "hard"] }
+      },
+      "required": ["examId", "text", "options", "correctIndex"]
+    },
+    "TestResult": {
+      "title": "TestResult",
+      "description": "Student exam results.",
+      "type": "object",
+      "properties": {
+        "studentNis": { "type": "string" },
+        "studentName": { "type": "string" },
+        "examId": { "type": "string" },
+        "examTitle": { "type": "string" },
+        "score": { "type": "number" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "major": { "type": "string" }
+      },
+      "required": ["studentNis", "examId", "score", "date"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "Employee and system user profiles."
+    },
+    "/students/{nis}": {
+      "schema": "Student",
+      "description": "Student database."
+    },
+    "/attendance/{attendanceId}": {
+      "schema": "Attendance",
+      "description": "Attendance records."
+    },
+    "/exams/{examId}": {
+      "schema": "Exam",
+      "description": "Exams available."
+    },
+    "/exams/{examId}/questions/{questionId}": {
+      "schema": "Question",
+      "description": "Questions for a specific exam."
+    },
+    "/test_results/{resultId}": {
+      "schema": "TestResult",
+      "description": "Student test scores."
+    }
+  }
+}
